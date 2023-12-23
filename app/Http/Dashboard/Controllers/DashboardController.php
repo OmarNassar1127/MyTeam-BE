@@ -4,9 +4,11 @@ namespace App\Http\Dashboard\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Club;
+use App\Models\Admin;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Dashboard\Helpers\StatisticsHelper;
 use App\Http\Dashboard\Resources\ClubTableResources;
-use Illuminate\Http\Request;
 
 class DashboardController 
 {
@@ -65,5 +67,14 @@ class DashboardController
              ->toMediaCollection('club_logos');
 
         return response()->json(['message' => 'Logo uploaded successfully']);
+    }
+
+    public function createAdmin()
+    {
+        Admin::create([
+            'name' => 'Omar',
+            'email' => 'omar@test.nl',
+            'password' => Hash::make('test123'),
+        ]);
     }
 }
