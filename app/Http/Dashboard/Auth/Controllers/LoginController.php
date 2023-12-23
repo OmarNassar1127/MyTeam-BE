@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController
 {
-    public function login(Request $request) {
+    public function adminLogin(Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
