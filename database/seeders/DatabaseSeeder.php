@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             TeamUserSeeder::class,
             SessionUserSeeder::class,
             PerformanceAnalysisSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

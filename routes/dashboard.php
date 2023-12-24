@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Dashboard\Controllers\CreateController;
 use App\Http\Dashboard\Controllers\DashboardController;
 use App\Http\Dashboard\Auth\Controllers\LoginController;
 use App\Http\Dashboard\Auth\Controllers\LogoutController;
-use App\Http\Dashboard\Controllers\CreateController;
 
 Route::post('/login', [LoginController::class, 'adminLogin']);
 
