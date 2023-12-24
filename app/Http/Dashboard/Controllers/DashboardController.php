@@ -4,11 +4,13 @@ namespace App\Http\Dashboard\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Club;
+use App\Models\User;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Dashboard\Helpers\StatisticsHelper;
 use App\Http\Dashboard\Resources\ClubTableResources;
+use App\Http\Dashboard\Resources\UserRolesResources;
 
 class DashboardController 
 {
@@ -52,6 +54,11 @@ class DashboardController
         return ClubTableResources::collection($clubs);
     }
 
+    public function users() {
+        $users = User::with('roles')->get();
+        return UserRolesResources::collection($users);
+    }
+    
     public function uploadLogo(Request $request, $clubId)
     {
         $request->validate([
