@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->foreignId('club_id')->constrained();
-            $table->string('name');
-            $table->string('category');
+            $table->string('name')->nullable();
+            $table->string('category')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
