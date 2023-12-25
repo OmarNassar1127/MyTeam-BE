@@ -4,12 +4,14 @@ namespace App\Http\Dashboard\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Club;
+use App\Models\Team;
 use App\Models\User;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Dashboard\Helpers\StatisticsHelper;
 use App\Http\Dashboard\Resources\ClubTableResources;
+use App\Http\Dashboard\Resources\TeamTableResources;
 use App\Http\Dashboard\Resources\UserRolesResources;
 
 class DashboardController 
@@ -52,6 +54,11 @@ class DashboardController
     public function clubs() {
         $clubs = Club::with(['presidents', 'teams.managers', 'teams.players', 'media'])->get();
         return ClubTableResources::collection($clubs);
+    }
+
+    public function teams() {
+        $teams = Team::with(['club', 'players', 'managers'])->get();
+        return TeamTableResources::collection($teams);
     }
 
     public function users() {
