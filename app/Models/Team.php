@@ -11,6 +11,11 @@ class Team extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = ['club_id', 'name', 'category'];
 
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'team_users')

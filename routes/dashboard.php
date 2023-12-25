@@ -18,6 +18,7 @@ Route::middleware('auth:admins')->group(function () {
   Route::get('/statistics', [DashboardController::class, 'statistics']);
   Route::get('/clubs', [DashboardController::class, 'clubs']);
   Route::get('/users', [DashboardController::class, 'users']);
+  Route::get('/teams', [DashboardController::class, 'teams']);
 
   //Posts
   Route::post('/clubs', [CreateController::class, 'storeClub']);
