@@ -19,12 +19,16 @@ Route::middleware('auth:admins')->group(function () {
   Route::get('/clubs', [DashboardController::class, 'clubs']);
   Route::get('/users', [DashboardController::class, 'users']);
   Route::get('/teams', [DashboardController::class, 'teams']);
-
-  //Posts
+  
+  //Dashboard Posts requests
   Route::post('/clubs', [CreateController::class, 'storeClub']);
   Route::post('/presidents', [CreateController::class, 'storePresident']);
   Route::post('/managers', [CreateController::class, 'storeManager']);
   Route::post('/teams', [CreateController::class, 'storeTeam']);
+  
+  //Get requests of users for dropdowns
+  Route::get('/get-presidents', [DashboardController::class, 'getPresidents']);
+  Route::get('/get-managers', [DashboardController::class, 'getManagers']);
 
   //Add logo to club
   Route::post('/clubs/{clubId}/upload-logo', [DashboardController::class, 'uploadLogo']);

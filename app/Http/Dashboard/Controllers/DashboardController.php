@@ -10,6 +10,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Dashboard\Helpers\StatisticsHelper;
+use App\Http\Dashboard\Resources\DropDownResources;
 use App\Http\Dashboard\Resources\ClubTableResources;
 use App\Http\Dashboard\Resources\TeamTableResources;
 use App\Http\Dashboard\Resources\UserRolesResources;
@@ -90,5 +91,21 @@ class DashboardController
             'email' => 'omar@test.nl',
             'password' => Hash::make('test123'),
         ]);
+    }
+
+    public function getPresidents() {
+        $presidents = User::whereHas('roles', function($query) {
+            $query->where('name', 'president');
+        })->get();
+
+        return DropDownResources::collection($presidents);
+    }
+
+    public function getManagers() {
+        $managers = User::whereHas('roles', function($query) {
+            $query->where('name', 'manager');
+        })->get();
+
+        return DropDownResources::collection($managers);
     }
 }
