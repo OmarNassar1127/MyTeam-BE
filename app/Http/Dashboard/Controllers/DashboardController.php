@@ -108,4 +108,9 @@ class DashboardController
 
         return DropDownResources::collection($managers);
     }
+
+    public function getClubs() {
+        $clubs = Club::all();
+        return DropDownResources::collection($clubs);
+    }
 }

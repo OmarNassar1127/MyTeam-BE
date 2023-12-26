@@ -29,6 +29,7 @@ Route::middleware('auth:admins')->group(function () {
   //Get requests of users for dropdowns
   Route::get('/get-presidents', [DashboardController::class, 'getPresidents']);
   Route::get('/get-managers', [DashboardController::class, 'getManagers']);
+  Route::get('/get-clubs', [DashboardController::class, 'getClubs']);
 
   //Add logo to club
   Route::post('/clubs/{clubId}/upload-logo', [DashboardController::class, 'uploadLogo']);
