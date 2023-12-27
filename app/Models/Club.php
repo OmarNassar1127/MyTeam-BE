@@ -12,7 +12,7 @@ class Club extends Model implements HasMedia
 {
     use SoftDeletes, InteractsWithMedia;
 
-    protected $fillable = ['name', 'address', 'contact_info', 'email', 'president_user_id'];
+    protected $fillable = ['name', 'address', 'contact_info', 'email', 'president_user_id', 'code'];
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -57,4 +57,30 @@ class Club extends Model implements HasMedia
         return $this->teams->flatMap->players->unique('id');
     }
 
+
+    /**
+     * Functions
+     */
+    
+    // Generate random code for club
+    public static function generateRandomCode() {
+        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $numbers = '0123456789';
+        $code = '';
+      
+        for ($i = 0; $i < 4; $i++) {
+            $code .= $letters[rand(0, strlen($letters) - 1)];
+        }
+        for ($i = 0; $i < 2; $i++) {
+            $code .= $numbers[rand(0, strlen($numbers) - 1)];
+        }
+      
+        return self::isCodeUnique($code) ? $code : self::generateRandomCode();
+      }
+      
+      // Helper method to check if the code is unique
+      protected static function isCodeUnique($code) {
+        return !self::where('code', $code)->exists();
+      }
+      
 }

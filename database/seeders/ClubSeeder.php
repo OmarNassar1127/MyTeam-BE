@@ -15,6 +15,7 @@ class ClubSeeder extends Seeder
             'contact_info' => '123-456-7890',
             'email' => 'clubone@example.com',
             'president_user_id' => 1,
+            'code' => Club::generateRandomCode()
         ]);
 
         Club::create([
@@ -23,6 +24,7 @@ class ClubSeeder extends Seeder
             'contact_info' => '123-456-7890',
             'email' => 'club2@example.com',
             'president_user_id' => 2,
+            'code' => Club::generateRandomCode()
         ]);
     }
 }

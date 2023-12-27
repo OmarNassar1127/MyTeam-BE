@@ -19,6 +19,8 @@ class CreateController
       'president_user_id' => 'nullable|integer|exists:users,id',
       'logo' => 'nullable|image'
     ]);
+
+    $code = Club::generateRandomCode();
   
     $club = Club::create([
       'name' => $request->name,
@@ -26,6 +28,7 @@ class CreateController
       'contact_info' => $request->contact_info,
       'email' => $request->email,
       'president_user_id' => $request->president_user_id,
+      'code' => $code,
     ]);
   
     if ($request->hasFile('logo')) {
