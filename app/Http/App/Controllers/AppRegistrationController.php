@@ -27,30 +27,34 @@ class AppRegistrationController
 
   public function register(Request $request) {
     $request->validate([
-      'voornamen' => 'required',
-      'achternaam' => 'required',
-      'email' => 'required|email,unique:users,email',
+      'first_name' => 'required|string',
+      'last_name' => 'required|string',
+      'email' => 'required|email|unique:users,email',
     ]);
-
+  
     User::create([
-      'voornamen' => $request->voornamen,
-      'achternaam' => $request->achternaam,
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
       'email' => $request->email,
     ]);
   }
-
+  
   public function registerFinish(Request $request) {
     $request->validate([
-      'phone' => 'required',
+      'email' => 'required|email|exists:users,email',
+      'phone_number' => 'required',
       'password' => 'required',
       'password_confirmation' => 'required|same:password',
     ]);
-
-    User::create([
-      'phone' => $request->phone,
-      'email' => $request->email,
+  
+    $user = User::where('email', $request->email)->first();
+  
+    $user->update([
+      'phone_number' => $request->phone_number,
       'password' => Hash::make($request->password),
     ]);
+  
+    return ['user' => $user];
   }
     
 }
