@@ -3,8 +3,8 @@
 namespace App\Http\Dashboard\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Role; // Add the missing import statement for the Role model
-class UserRolesResources extends JsonResource
+
+class ClubDropDownResources extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,7 @@ class UserRolesResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->first_name . ' ' . $this->last_name,
-            'role' => $this->roles->first() ? $this->roles->first()->name : 'User has no role',
+            'name' => $this->name,
         ];
     }
 }
