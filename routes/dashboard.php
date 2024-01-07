@@ -32,9 +32,6 @@ Route::middleware('auth:admins')->group(function () {
   Route::get('/get-managers', [DashboardController::class, 'getManagers']);
   Route::get('/get-clubs', [DashboardController::class, 'getClubs']);
 
-
-  // add te changes of first_name and last_name, it needs to be fixed!!
-
   /**
    * Clubs 
    */
