@@ -42,7 +42,8 @@ class CreateController
 
   public function storePresident(Request $request) {
     $request->validate([
-      'name' => 'required|string',
+      'first_name' => 'required|string',
+      'last_name' => 'required|string',
       'email' => 'required|email|unique:users,email',
       'password' => 'required|string|min:6',
       'address' => 'required|string',
@@ -50,7 +51,8 @@ class CreateController
     ]);
   
     $user = User::create([
-      'name' => $request->name,
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
       'email' => $request->email,
       'password' => bcrypt($request->password),
       'address' => $request->address,
@@ -67,7 +69,8 @@ class CreateController
 
   public function storeManager(Request $request) {
     $request->validate([
-      'name' => 'required|string',
+      'first_name' => 'required|string',
+      'last_name' => 'required|string',
       'email' => 'required|email|unique:users,email',
       'password' => 'required|string|min:6',
       'address' => 'required|string',
@@ -75,7 +78,8 @@ class CreateController
     ]);
   
     $user = User::create([
-      'name' => $request->name,
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
       'email' => $request->email,
       'password' => bcrypt($request->password),
       'address' => $request->address,
