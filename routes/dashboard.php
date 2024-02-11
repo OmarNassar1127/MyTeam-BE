@@ -8,6 +8,7 @@ use App\Http\Dashboard\Auth\Controllers\LogoutController;
 use App\Http\Dashboard\Clubs\Controllers\ClubController;
 
 Route::post('/login', [LoginController::class, 'adminLogin']);
+Route::post('/admin', [DashboardController::class, 'createAdmin']);
 
 Route::middleware('auth:admins')->group(function () {
   //Logout
@@ -42,5 +43,4 @@ Route::middleware('auth:admins')->group(function () {
   Route::post('/clubs/{clubId}/upload-logo', [DashboardController::class, 'uploadLogo']);
 
   //creation of admin
-  // Route::post('/admin', [DashboardController::class, 'createAdmin']);
 });
