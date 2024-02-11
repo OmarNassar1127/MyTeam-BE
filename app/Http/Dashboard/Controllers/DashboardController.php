@@ -14,6 +14,7 @@ use App\Http\Dashboard\Resources\DropDownResources;
 use App\Http\Dashboard\Resources\ClubTableResources;
 use App\Http\Dashboard\Resources\TeamTableResources;
 use App\Http\Dashboard\Resources\UserRolesResources;
+use App\Http\Dashboard\Resources\ClubDropDownResources;
 
 class DashboardController 
 {
@@ -111,6 +112,6 @@ class DashboardController
 
     public function getClubs() {
         $clubs = Club::all();
-        return DropDownResources::collection($clubs);
+        return ClubDropDownResources::collection($clubs);
     }
 }

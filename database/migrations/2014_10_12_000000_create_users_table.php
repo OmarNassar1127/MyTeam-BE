@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
