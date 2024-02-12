@@ -22,7 +22,7 @@ class AppLoginController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['De inloggegevens zijn onjuist.'],
+                'error' => ['De inloggegevens zijn onjuist.'],
             ]);
         }
 
