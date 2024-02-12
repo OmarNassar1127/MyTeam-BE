@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\App\Controllers\Resources\UserResources;
 
 
 class AppLoginController extends Controller
@@ -28,7 +29,13 @@ class AppLoginController extends Controller
 
         return [
             'token' => $user->createToken('admin')->plainTextToken,
-            'user' => $user
+            'user' => UserResources::make($user),
         ];
+    }
+
+    public function logOut(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out'], 200);
     }
 }
