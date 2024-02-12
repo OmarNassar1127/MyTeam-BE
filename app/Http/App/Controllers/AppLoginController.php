@@ -11,23 +11,24 @@ use Illuminate\Validation\ValidationException;
 
 class AppLoginController extends Controller
 {
-  public function logIn(Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (!$user || !Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['De inloggegevens zijn onjuist.'],
+  public function logIn(Request $request) 
+  {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
-    }
 
-    return [
-        'token' => $user->createToken('admin')->plainTextToken,
-        'user' => $user
-    ];
-}
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['De inloggegevens zijn onjuist.'],
+            ]);
+        }
+
+        return [
+            'token' => $user->createToken('admin')->plainTextToken,
+            'user' => $user
+        ];
+    }
 }
