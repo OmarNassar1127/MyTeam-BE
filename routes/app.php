@@ -11,12 +11,9 @@ Route::post('/fetch-club', [AppRegistrationController::class, 'clubFetch']);
 Route::post('/registration', [AppRegistrationController::class, 'register']);
 Route::post('/registration-finish', [AppRegistrationController::class, 'registerFinish']);
 
-Route::get('/test', [AppLoginController::class, 'test']);
-
 Route::middleware('auth:users')->group(function () {
 
 Route::post('/log-out', [AppLoginController::class, 'logOut']);
   //all routes for the app
-
   
 });
