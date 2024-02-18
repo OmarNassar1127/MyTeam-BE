@@ -80,4 +80,24 @@ class User extends Authenticatable
             $subQuery->where('name', 'player');
         });
     }
+
+    /*
+     * Attribute
+    */
+
+    public function getRoleAttribute()
+    {
+        return $this->roles()->first()->name ?? null;
+    }
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return string|null
+     */
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+    
 }
