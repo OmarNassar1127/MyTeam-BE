@@ -11,28 +11,23 @@ class ProfileController extends Controller
 
   public function profile()
   {
-      $user = $this->user; 
-      $teams = $user->teams;
-  
-      $trained = 0;
-      $late = 0;
-      $present = 0;
-      $absent = 0;
-  
-      foreach ($teams as $team) {
-          $trained += $team->games->count(); //not good 
-          $late += $team->games->where('status', 'late')->count(); 
-          $present += $team->sessions->where('status', 'present')->count(); 
-          $absent += $team->sessions->where('status', 'absent')->count();
-      }
-  
+      $user = $this->user->load(['gameParticipations', 'sessionParticipations']);
+
+      $playedGames = $user->gameParticipations->count();
+      $lateGame = $user->gameParticipations->where('pivot.status', 'late')->count();
+      $absentGames = $user->gameParticipations->where('pivot.status', 'absent')->count();
+
+      $trainedSessions = $user->sessionParticipations->count();
+      $presentSession = $user->sessionParticipations->where('pivot.status', 'present')->count();
+      $absentSession = $user->sessionParticipations->where('pivot.status', 'absent')->count();
+
       return [
-              'trained' => $trained,
-              'late' => $late,
-              'present' => $present,
-              'absent' => $absent,
+          'late_to_the_game' => $lateGame,
+          'played_games' => $playedGames,
+          'absent_games' => $absentGames,
+          'trained_sessions' => $trainedSessions,
+          'present_in_the_session' => $presentSession,
+          'absent_in_the_session' => $absentSession,
       ];
-  }  
-  // need to fix the way it's accessing the data, it needs to be now through the session_users 
-  //pivot table and game_users pivot table
+  } // check that all the realtions are correct and the pivot table is correct
 }

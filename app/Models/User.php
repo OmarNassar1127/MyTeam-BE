@@ -56,6 +56,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Team::class, 'team_users');
     }
 
+    public function gameParticipations()
+    {
+        return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
+    }
+
+    public function sessionParticipations()
+    {
+        return $this->belongsToMany(Session::class, 'session_users')->withPivot('status');
+    }
+
     /*
      * Scopes
     */
