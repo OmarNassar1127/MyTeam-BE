@@ -53,7 +53,9 @@ class User extends Authenticatable
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'team_users');
+        return $this->belongsToMany(Team::class, 'team_users')
+                    ->withPivot('is_manager')
+                    ->withTimestamps();
     }
 
     public function gameParticipations()

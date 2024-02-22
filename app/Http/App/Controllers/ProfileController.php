@@ -29,5 +29,5 @@ class ProfileController extends Controller
           'present_in_the_session' => $presentSession,
           'absent_in_the_session' => $absentSession,
       ];
-  } // check that all the realtions are correct and the pivot table is correct
+  }
 }
