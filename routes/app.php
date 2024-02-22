@@ -2,7 +2,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\App\Controllers\ProfileController;
 use App\Http\App\Controllers\AppLoginController;
-use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\App\Controllers\AppRegistrationController;
 
 //Login to the app
