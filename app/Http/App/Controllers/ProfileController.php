@@ -13,21 +13,26 @@ class ProfileController extends Controller
   {
     $user = $this->user->load(['gameParticipations', 'sessionParticipations']);
 
-    $playedGames = $user->gameParticipations->count();
+    $games = $user->gameParticipations->count();
+    $presentGame = $user->gameParticipations->where('pivot.status', 'present')->count();
     $lateGame = $user->gameParticipations->where('pivot.status', 'late')->count();
     $absentGames = $user->gameParticipations->where('pivot.status', 'absent')->count();
 
-    $trainedSessions = $user->sessionParticipations->count();
+    
+    $trainings = $user->sessionParticipations->count();
     $presentSession = $user->sessionParticipations->where('pivot.status', 'present')->count();
     $absentSession = $user->sessionParticipations->where('pivot.status', 'absent')->count();
+    $lateSession = $user->sessionParticipations->where('pivot.status', 'late')->count();
 
     return [
+        'games' => $games,
+        'present_in_the_game' => $presentGame,
         'late_to_the_game' => $lateGame,
-        'played_games' => $playedGames,
         'absent_games' => $absentGames,
-        'trained_sessions' => $trainedSessions,
+        'trainings' => $trainings,
         'present_in_the_session' => $presentSession,
         'absent_in_the_session' => $absentSession,
+        'late_to_the_session' => $lateSession
     ];
   }
 }
