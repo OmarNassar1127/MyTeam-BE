@@ -21,4 +21,18 @@ class Controller extends BaseController
             return $next($request);
         });
     }
+
+    public function unathenticated(){
+        if (!$this->user) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
+    // public function isManager(){
+    //     if ($this->user->role == 'manager') {
+    //         true;
+    //     } else {
+    //         abort(403, 'Unauthorized.');
+    //     }
+    // }
 }
