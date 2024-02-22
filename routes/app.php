@@ -15,7 +15,7 @@ Route::post('/registration-finish', [AppRegistrationController::class, 'register
 
 Route::middleware('auth:users')->group(function () {
 
-Route::post('/log-out', [AppLoginController::class, 'logOut']);
+  Route::post('/log-out', [AppLoginController::class, 'logOut']);
   
   Route::get('/profile', [ProfileController::class, 'profile']);
 
