@@ -53,7 +53,19 @@ class User extends Authenticatable
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'team_users');
+        return $this->belongsToMany(Team::class, 'team_users')
+                    ->withPivot('is_manager')
+                    ->withTimestamps();
+    }
+
+    public function gameParticipations()
+    {
+        return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
+    }
+
+    public function sessionParticipations()
+    {
+        return $this->belongsToMany(Session::class, 'session_users')->withPivot('status');
     }
 
     /*
@@ -80,4 +92,24 @@ class User extends Authenticatable
             $subQuery->where('name', 'player');
         });
     }
+
+    /*
+     * Attribute
+    */
+
+    public function getRoleAttribute()
+    {
+        return $this->roles()->first()->name ?? null;
+    }
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return string|null
+     */
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+    
 }

@@ -38,7 +38,7 @@ class Team extends Model
     }
     public function games()
     {
-        return $this->hasMany(Game::class);
+        return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
     }
 
     public function gameManagers()
@@ -59,7 +59,7 @@ class Team extends Model
 
     public function sessions()
     {
-        return $this->hasMany(Session::class);
+        return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
     }
 
     public function sessionManagers()

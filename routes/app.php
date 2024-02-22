@@ -1,6 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\App\Controllers\ProfileController;
 use App\Http\App\Controllers\AppLoginController;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\App\Controllers\AppRegistrationController;
 
 //Login to the app
@@ -14,6 +16,7 @@ Route::post('/registration-finish', [AppRegistrationController::class, 'register
 Route::middleware('auth:users')->group(function () {
 
 Route::post('/log-out', [AppLoginController::class, 'logOut']);
-  //all routes for the app
   
+  Route::get('/profile', [ProfileController::class, 'profile']);
+
 });

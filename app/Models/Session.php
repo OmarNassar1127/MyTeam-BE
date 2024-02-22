@@ -10,6 +10,13 @@ class Session extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'session_users')
+                    ->withPivot('is_manager')
+                    ->withTimestamps();
+    }
+    
     public function team()
     {
         return $this->belongsTo(Team::class);
