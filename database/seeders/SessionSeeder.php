@@ -13,7 +13,7 @@ class SessionSeeder extends Seeder
      */
     public function run(): void
     {
-            Session::create(['team_id' => 1, 'date' => '2023-11-14 14:58:21', 'notes' => 'notes']);
-            Session::create(['team_id' => 2, 'date' => '2023-11-14 14:58:21', 'notes' => 'notes']);
+            Session::create(['team_id' => 1, 'date' => '2023-11-14 14:58:21', 'notes' => 'notes', 'completed' => true]);
+            Session::create(['team_id' => 2, 'date' => '2023-11-14 14:58:21', 'notes' => 'notes', 'completed' => true]);
     }
 }
