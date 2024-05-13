@@ -78,4 +78,40 @@ class Team extends Model
                     ->withTimestamps();
     }
 
+    public function topScorer()
+    {
+        return $this->players()
+                    ->withCount('goals')
+                    ->orderBy('goals_count', 'desc')
+                    ->first();
+    }
+
+    public function topAssister()
+    {
+        return $this->players()
+                    ->withCount('assists')
+                    ->orderBy('assists_count', 'desc')
+                    ->first();
+    }
+
+    public function mostPresent()
+    {
+        return $this->players()
+                    ->withCount(['gameUsers as presence' => function ($query) {
+                        $query->where('status', 'present');
+                    }])
+                    ->orderBy('presence_count', 'desc')
+                    ->first();
+    }
+
+    public function mostAbsent()
+    {
+        return $this->players()
+                    ->withCount(['gameUsers as absence' => function ($query) {
+                        $query->where('status', 'absent');
+                    }])
+                    ->orderBy('absence_count', 'desc')
+                    ->first();
+    }
+
 }
