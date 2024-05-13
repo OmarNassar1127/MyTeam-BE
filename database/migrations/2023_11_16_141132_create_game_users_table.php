@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->boolean('is_manager')->default(false);
+            $table->unsignedInteger('goals')->default(0);
+            $table->unsignedInteger('assists')->default(0);
+            $table->unsignedInteger('yellow_cards')->default(0);
+            $table->unsignedInteger('red_cards')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -13,6 +13,8 @@ class GameUser extends Pivot
 
     protected $table = 'game_users';
 
+    protected $guarded = [];
+
     public static function boot()
     {
         parent::boot();
