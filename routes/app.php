@@ -17,6 +17,6 @@ Route::middleware('auth:users')->group(function () {
   Route::post('/log-out', [AppLoginController::class, 'logOut']);
   
   Route::get('/profile', [ProfileController::class, 'profile']);
-  Route::get('/profile/{team}/team-stats', [ProfileController::class, 'getTeamStats']);
+  Route::get('/profile/team-stats', [ProfileController::class, 'getTeamStats']);
 
 });

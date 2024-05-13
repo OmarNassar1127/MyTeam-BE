@@ -37,19 +37,20 @@ class ProfileController extends Controller
     ];
   }
 
-  public function getTeamStats(Team $team)
+  public function getTeamStats(Request $request)
   {
-      $team->with('players');
+      $team = $request->user()->teams()->first();
+
       $topScorer = $team->topScorer();
       $topAssister = $team->topAssister();
       $mostPresent = $team->mostPresent();
       $mostAbsent = $team->mostAbsent();
 
-      return response()->json([
-          'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->goals_count] : 0,
-          'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->assists_count] : 0,
-          'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->presence_count] : 0,
-          'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absence_count] : 0,
-      ]);
+      return [
+          'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
+          'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
+          'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
+          'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_games_count + $mostAbsent->absent_sessions_count] : null,
+      ];
   }
 }

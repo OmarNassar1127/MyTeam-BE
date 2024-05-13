@@ -58,6 +58,10 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    public function profile() {
+        return $this->hasOne(PlayerProfile::class);
+    }
+
     public function gameParticipations()
     {
         return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
