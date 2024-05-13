@@ -31,7 +31,7 @@ class GameController extends Controller
                 $game->users()->attach($user->id, [
                     'team_id' => $team->id,
                     'is_manager' => $isManager,
-                    'is_absent' => false
+                    'status' => 'present'
                 ]);
             }
         }

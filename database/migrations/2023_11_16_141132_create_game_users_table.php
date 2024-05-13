@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->boolean('is_manager')->default(false);
-            $table->boolean('is_absent')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
