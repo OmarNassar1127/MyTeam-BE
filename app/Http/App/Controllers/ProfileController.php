@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\App\Resources\GameResources;
+use App\Http\App\Resources\SessionResources;
 
 class ProfileController extends Controller
 {
@@ -51,7 +52,7 @@ class ProfileController extends Controller
 
       return [
           'upcoming_game' => GameResources::make($upcomingGame),
-          'upcoming_session' => $upcomingSession,
+          'upcoming_session' => SessionResources::make($upcomingSession),
           'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
           'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
           'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
