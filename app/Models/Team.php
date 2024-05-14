@@ -138,7 +138,7 @@ class Team extends Model
     {
         return $this->sessions()
                     ->where('date', '>', now())
-                    ->orderBy('date', 'asc')
+                    ->latest()
                     ->first();
     }
 }
