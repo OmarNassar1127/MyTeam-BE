@@ -16,8 +16,7 @@ class UserResources extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'birthday' => $this->birthday,
-            'role' => $this->role,
-            'team_id' => $this->teams[0]['id']
+            'role' => $this->role
         ];
     }
 }
