@@ -2,10 +2,11 @@
 
 namespace App\Http\App\Controllers;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Team;
+use App\Http\App\Resources\GameResources;
 
 class ProfileController extends Controller
 {
@@ -49,7 +50,7 @@ class ProfileController extends Controller
       $upcomingSession = $team->upcoming_training;
 
       return [
-          'upcoming_game' => $upcomingGame,
+          'upcoming_game' => GameResources::make($upcomingGame),
           'upcoming_session' => $upcomingSession,
           'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
           'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,

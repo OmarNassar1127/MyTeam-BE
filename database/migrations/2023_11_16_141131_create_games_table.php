@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained();
             $table->timestamp('date');
             $table->string('opponent');
-            $table->string('home');
+            $table->boolean('home')->default(false);
             $table->string('result')->nullable();
             $table->string('season');
             $table->timestamps();

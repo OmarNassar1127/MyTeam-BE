@@ -130,7 +130,7 @@ class Team extends Model
     {
         return $this->games()
                     ->where('date', '>', now())
-                    ->orderBy('date', 'asc')
+                    ->latest()
                     ->first();
     }
 
