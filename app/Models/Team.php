@@ -40,7 +40,12 @@ class Team extends Model
 
     public function games()
     {
-        return $this->hasMany(Game::class, 'game_users')->withPivot('status');
+        return $this->hasMany(Game::class);
+    }
+
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
     }
 
     public function gameManagers()
@@ -57,11 +62,6 @@ class Team extends Model
                     ->withPivot('is_manager')
                     ->wherePivot('is_manager', false)
                     ->withTimestamps();
-    }
-
-    public function sessions()
-    {
-        return $this->belongsToMany(Game::class, 'game_users')->withPivot('status');
     }
 
     public function sessionManagers()
@@ -123,6 +123,22 @@ class Team extends Model
                     }])
                     ->orderByDesc('absent_games_count')
                     ->orderByDesc('absent_sessions_count')
+                    ->first();
+    }
+
+    public function getUpcomingGameAttribute()
+    {
+        return $this->games()
+                    ->where('date', '>', now())
+                    ->orderBy('date', 'asc')
+                    ->first();
+    }
+
+    public function getUpcomingTrainingAttribute()
+    {
+        return $this->sessions()
+                    ->where('date', '>', now())
+                    ->orderBy('date', 'asc')
                     ->first();
     }
 }
