@@ -51,12 +51,13 @@ class ProfileController extends Controller
       $upcomingSession = $team->upcoming_training;
 
       return [
+        'data' => [
           'upcoming_game' => GameResources::make($upcomingGame),
           'upcoming_session' => SessionResources::make($upcomingSession),
           'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
           'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
           'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
           'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_games_count + $mostAbsent->absent_sessions_count] : null,
-      ];
+        ]];
   }
 }
