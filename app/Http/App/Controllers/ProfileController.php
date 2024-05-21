@@ -39,25 +39,26 @@ class ProfileController extends Controller
     ];
   }
 
-  public function getTeamStats(Request $request)
+  public function getTeamStats()
   {
-      $team = $request->user()->teams()->first();
-
+      $team = $this->user->teams()->first();
+  
       $topScorer = $team->topScorer();
       $topAssister = $team->topAssister();
       $mostPresent = $team->mostPresent();
       $mostAbsent = $team->mostAbsent();
       $upcomingGame = $team->upcoming_game;
       $upcomingSession = $team->upcoming_training;
-
+  
       return [
-        'data' => [
-          'upcoming_game' => GameResources::make($upcomingGame),
-          'upcoming_session' => SessionResources::make($upcomingSession),
-          'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
-          'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
-          'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
-          'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_games_count + $mostAbsent->absent_sessions_count] : null,
-        ]];
+          'data' => [
+              'upcoming_game' => $upcomingGame ? GameResources::make($upcomingGame) : null,
+              'upcoming_session' => $upcomingSession ? SessionResources::make($upcomingSession) : null,
+              'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
+              'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
+              'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
+              'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_games_count + $mostAbsent->absent_sessions_count] : null,
+          ]
+      ];
   }
 }
