@@ -41,7 +41,6 @@ class AppRegistrationController
   
   public function registerFinish(Request $request) {
     $request->validate([
-      'email' => 'required|email|exists:users,email',
       'phone_number' => 'required',
       'password' => 'required',
       'password_confirmation' => 'required|same:password',
