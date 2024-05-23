@@ -3,11 +3,16 @@
 namespace App\Http\App\Controllers;
 
 use App\Models\Club;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\App\Resources\TeamResources;
 
-class AppRegistrationController
+
+class AppRegistrationController extends Controller
 {
   public function clubFetch(Request $request) {
     $request->validate([
@@ -41,6 +46,7 @@ class AppRegistrationController
   
   public function registerFinish(Request $request) {
     $request->validate([
+      'email' => 'required|email|exists:users,email',
       'phone_number' => 'required',
       'password' => 'required',
       'password_confirmation' => 'required|same:password',
@@ -52,8 +58,30 @@ class AppRegistrationController
       'phone_number' => $request->phone_number,
       'password' => Hash::make($request->password),
     ]);
-  
-    return ['user' => $user];
+    return [200];
+  }
+
+  public function getTeams($clubId)
+  {
+    $club = Club::findOrFail($clubId);
+    return TeamResources::collection($club->teams);
   }
     
+  // public function linkUser($clubId, $teamId)
+  //   {
+  //       $user = Auth::user();
+
+  //       if (!$user) {
+  //           return response()->json(['message' => 'Unauthorized'], 401);
+  //       }
+
+  //       $team = Team::where('id', $teamId)->where('club_id', $clubId)->first();
+  //       if (!$team) {
+  //           return response()->json(['message' => 'Invalid team or club'], 400);
+  //       }
+
+  //       $user->teams()->attach($teamId, ['is_manager' => false]);
+
+  //       return response()->json(['message' => 'User linked to team successfully']);
+  //   }
 }

@@ -11,12 +11,15 @@ Route::post('/log-in', [AppLoginController::class, 'logIn']);
 Route::post('/fetch-club', [AppRegistrationController::class, 'clubFetch']);
 Route::post('/registration', [AppRegistrationController::class, 'register']);
 Route::post('/registration-finish', [AppRegistrationController::class, 'registerFinish']);
+Route::get('/club/{clubId}/teams', [AppRegistrationController::class, 'getTeams']);
+Route::get('/club/{club}/teams/{team}/link', [AppRegistrationController::class, 'linkUser']);
 
 Route::middleware('auth:users')->group(function () {
 
   Route::post('/log-out', [AppLoginController::class, 'logOut']);
-  
+  //profile
   Route::get('/profile', [ProfileController::class, 'profile']);
   Route::get('/profile/team-stats', [ProfileController::class, 'getTeamStats']);
+  
 
 });
