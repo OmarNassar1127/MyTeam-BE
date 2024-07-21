@@ -8,35 +8,52 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\App\Resources\GameResources;
 use App\Http\App\Resources\SessionResources;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
 
   public function profile()
   {
-    $user = $this->user->load(['gameParticipations', 'sessionParticipations']);
+      $user = $this->user->load(['gameParticipations', 'sessionParticipations']);
 
-    $games = $user->gameParticipations->count();
-    $presentGame = $user->gameParticipations->where('pivot.status', 'present')->count();
-    $lateGame = $user->gameParticipations->where('pivot.status', 'late')->count();
-    $absentGames = $user->gameParticipations->where('pivot.status', 'absent')->count();
+      $profileImageUrl = $user->hasMedia('profile') ? route('user.profile-image') : null;
 
-    
-    $trainings = $user->sessionParticipations->count();
-    $presentSession = $user->sessionParticipations->where('pivot.status', 'present')->count();
-    $absentSession = $user->sessionParticipations->where('pivot.status', 'absent')->count();
-    $lateSession = $user->sessionParticipations->where('pivot.status', 'late')->count();
+      $games = $user->gameParticipations->count();
+      $presentGame = $user->gameParticipations->where('pivot.status', 'present')->count();
+      $lateGame = $user->gameParticipations->where('pivot.status', 'late')->count();
+      $absentGames = $user->gameParticipations->where('pivot.status', 'absent')->count();
 
-    return [
-        'games' => $games,
-        'present_in_the_game' => $presentGame,
-        'late_to_the_game' => $lateGame,
-        'absent_games' => $absentGames,
-        'trainings' => $trainings,
-        'present_in_the_session' => $presentSession,
-        'absent_in_the_session' => $absentSession,
-        'late_to_the_session' => $lateSession
-    ];
+      $trainings = $user->sessionParticipations->count();
+      $presentSession = $user->sessionParticipations->where('pivot.status', 'present')->count();
+      $absentSession = $user->sessionParticipations->where('pivot.status', 'absent')->count();
+      $lateSession = $user->sessionParticipations->where('pivot.status', 'late')->count();
+
+      return [
+          'profile_image_url' => $profileImageUrl,
+          'games' => $games,
+          'present_in_the_game' => $presentGame,
+          'late_to_the_game' => $lateGame,
+          'absent_games' => $absentGames,
+          'trainings' => $trainings,
+          'present_in_the_session' => $presentSession,
+          'absent_in_the_session' => $absentSession,
+          'late_to_the_session' => $lateSession
+      ];
+  }
+
+  public function getProfileImage()
+  {
+      $user = $this->user; 
+      $profileImage = $user->getFirstMedia('profile');
+
+      if ($profileImage) {
+          $filePath = $profileImage->getPath();
+
+          if (Storage::disk('users')->exists($filePath)) {
+              return Storage::disk('users')->response($filePath);
+          }
+      }
   }
 
   public function image(Request $request)
@@ -45,9 +62,9 @@ class ProfileController extends Controller
           'profile' => 'required|mimes:jpeg,png,jpg|max:2048' 
       ]);
 
-          $user = $this->user; 
-          $user->clearMediaCollection('profile');
-          $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'users');
+      $user = $this->user; 
+      $user->clearMediaCollection('profile');
+      $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'users');
   }
 
   public function getTeamStats()
