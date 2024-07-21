@@ -39,6 +39,17 @@ class ProfileController extends Controller
     ];
   }
 
+  public function image(Request $request)
+  {
+      $request->validate([
+          'profile' => 'required|mimes:jpeg,png,jpg|max:2048' 
+      ]);
+
+          $user = $this->user; 
+          $user->clearMediaCollection('profile');
+          $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'users');
+  }
+
   public function getTeamStats()
   {
       $team = $this->user->teams()->first();

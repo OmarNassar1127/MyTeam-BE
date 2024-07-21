@@ -7,11 +7,13 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -115,5 +117,14 @@ class User extends Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
-    
+
+    /**
+     * Register media collections and conversions.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile')
+            ->useDisk('users') 
+            ->singleFile();
+    }
 }
