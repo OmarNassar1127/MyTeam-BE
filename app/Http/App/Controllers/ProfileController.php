@@ -17,8 +17,6 @@ class ProfileController extends Controller
   {
       $user = $this->user->load(['gameParticipations', 'sessionParticipations']);
 
-      $profileImageUrl = $user->hasMedia('profile') ? route('user.profile-image') : null;
-
       $games = $user->gameParticipations->count();
       $presentGame = $user->gameParticipations->where('pivot.status', 'present')->count();
       $lateGame = $user->gameParticipations->where('pivot.status', 'late')->count();
@@ -30,7 +28,6 @@ class ProfileController extends Controller
       $lateSession = $user->sessionParticipations->where('pivot.status', 'late')->count();
 
       return [
-          'profile_image_url' => $profileImageUrl,
           'games' => $games,
           'present_in_the_game' => $presentGame,
           'late_to_the_game' => $lateGame,
@@ -42,17 +39,13 @@ class ProfileController extends Controller
       ];
   }
 
-  public function getProfileImage()
+  public function getProfileImage(Request $request)
   {
       $user = $this->user; 
       $profileImage = $user->getFirstMedia('profile');
 
       if ($profileImage) {
-          $filePath = $profileImage->getPath();
-
-          if (Storage::disk('users')->exists($filePath)) {
-              return Storage::disk('users')->response($filePath);
-          }
+          return $profileImage->toInlineResponse($request);
       }
   }
 
