@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\App\Resources\GameResources;
 use App\Http\App\Resources\SessionResources;
+use App\Models\Game;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -82,4 +83,40 @@ class ProfileController extends Controller
           ]
       ];
   }
+
+  public function getPlayerStats(Request $request)
+  {
+      $userId = $this->user->id;
+  
+      $games = Game::whereHas('users', function($query) use ($userId) {
+          $query->where('user_id', $userId);
+      })->with(['users' => function($query) use ($userId) {
+          $query->where('user_id', $userId)
+                ->select('users.id')
+                ->withPivot('goals', 'assists', 'yellow_cards', 'red_cards');
+      }])->get();
+  
+      $stats = $games->flatMap(function($game) {
+          return $game->users->map(function($user) {
+              return [
+                  'goals' => $user->pivot->goals,
+                  'assists' => $user->pivot->assists,
+                  'yellow_cards' => $user->pivot->yellow_cards,
+                  'red_cards' => $user->pivot->red_cards,
+              ];
+          });
+      });
+  
+      $summarizedStats = $stats->reduce(function($carry, $stat) {
+          $carry['goals'] += $stat['goals'];
+          $carry['assists'] += $stat['assists'];
+          $carry['yellow_cards'] += $stat['yellow_cards'];
+          $carry['red_cards'] += $stat['red_cards'];
+          return $carry;
+      }, ['goals' => 0, 'assists' => 0, 'yellow_cards' => 0, 'red_cards' => 0]);
+  
+      return response()->json($summarizedStats);
+  }  
+
+
 }

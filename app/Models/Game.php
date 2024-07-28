@@ -1,8 +1,8 @@
 <?php
 
+// App\Models\Game.php
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +14,7 @@ class Game extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'game_users')
-                    ->withPivot('is_manager')
+                    ->withPivot('is_manager', 'status', 'goals', 'assists', 'yellow_cards', 'red_cards')
                     ->withTimestamps();
     }
     public function team()

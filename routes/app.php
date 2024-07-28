@@ -22,6 +22,7 @@ Route::middleware('auth:users')->group(function () {
   Route::get('/user/profile-image', [ProfileController::class, 'getProfileImage'])->name('user.profile-image');
   Route::post('/profile/image', [ProfileController::class, 'image']);
   Route::get('/profile/team-stats', [ProfileController::class, 'getTeamStats']);
+  Route::get('/profile/player-stats', [ProfileController::class, 'getPlayerStats']);
   
 
 });
