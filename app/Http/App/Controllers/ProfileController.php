@@ -118,5 +118,37 @@ class ProfileController extends Controller
       return response()->json($summarizedStats);
   }  
 
+    public function getTeamMembers()
+    {
+        $team = $this->user->teams()->first();
+
+        $members = $team->players()->with(['gameParticipations' => function ($query) use ($team) {
+            $query->whereHas('game', function ($q) use ($team) {
+                $q->where('team_id', $team->id);
+            });
+        }])->get()->map(function ($player) {
+            $stats = $player->gameParticipations->reduce(function ($carry, $participation) {
+                $carry['goals'] += $participation->goals;
+                $carry['assists'] += $participation->assists;
+                $carry['yellow_cards'] += $participation->yellow_cards;
+                $carry['red_cards'] += $participation->red_cards;
+                return $carry;
+            }, ['goals' => 0, 'assists' => 0, 'yellow_cards' => 0, 'red_cards' => 0]);
+
+            return [
+                'id' => $player->id,
+                'name' => $player->name,
+                'goals' => $stats['goals'],
+                'assists' => $stats['assists'],
+                'yellow_cards' => $stats['yellow_cards'],
+                'red_cards' => $stats['red_cards'],
+            ];
+        });
+
+        return [
+            'team_name' => $team->name,
+            'members' => $members
+        ];
+    }
 
 }
