@@ -76,10 +76,10 @@ class ProfileController extends Controller
           'data' => [
               'upcoming_game' => $upcomingGame ? GameResources::make($upcomingGame) : null,
               'upcoming_session' => $upcomingSession ? SessionResources::make($upcomingSession) : null,
-              'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->profile->goals] : null,
-              'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->profile->assists] : null,
-              'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_games_count + $mostPresent->present_sessions_count] : null,
-              'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_games_count + $mostAbsent->absent_sessions_count] : null,
+              'top_scorer' => $topScorer ? ['name' => $topScorer->name, 'goals' => $topScorer->total_goals] : null,
+              'top_assister' => $topAssister ? ['name' => $topAssister->name, 'assists' => $topAssister->total_assists] : null,
+              'most_present' => $mostPresent ? ['name' => $mostPresent->name, 'present' => $mostPresent->present_count] : null,
+              'most_absent' => $mostAbsent ? ['name' => $mostAbsent->name, 'absent' => $mostAbsent->absent_count] : null,
           ]
       ];
   }

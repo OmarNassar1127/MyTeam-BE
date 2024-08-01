@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Game extends Model
 {
     use HasFactory, SoftDeletes;
+    
+    protected $guarded = [];
 
     public function users()
     {

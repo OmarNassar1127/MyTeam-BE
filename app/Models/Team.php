@@ -10,7 +10,7 @@ class Team extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['club_id', 'name', 'category'];
+    protected $guarded = [];
 
     public function club()
     {
@@ -83,47 +83,37 @@ class Team extends Model
     public function topScorer()
     {
         return $this->players()
-                    ->with('profile') 
-                    ->get()
-                    ->sortByDesc(function ($player) {
-                        return $player->profile ? $player->profile->goals : 0;
-                    })->first();
+            ->withSum('gameParticipations as total_goals', 'goals')
+            ->orderByDesc('total_goals')
+            ->first();
     }
 
     public function topAssister()
     {
         return $this->players()
-                    ->with('profile')
-                    ->get()
-                    ->sortByDesc(function ($player) {
-                        return $player->profile ? $player->profile->assists : 0;
-                    })->first();
+            ->withSum('gameParticipations as total_assists', 'assists')
+            ->orderByDesc('total_assists')
+            ->first();
     }
 
     public function mostPresent()
     {
         return $this->players()
-                    ->withCount(['gameParticipations as present_games_count' => function($query) {
-                        $query->where('status', 'present');
-                    }, 'sessionParticipations as present_sessions_count' => function($query) {
-                        $query->where('status', 'present');
-                    }])
-                    ->orderByDesc('present_games_count')
-                    ->orderByDesc('present_sessions_count')
-                    ->first();
+            ->withCount(['gameParticipations as present_count' => function ($query) {
+                $query->where('status', 'present');
+            }])
+            ->orderByDesc('present_count')
+            ->first();
     }
 
     public function mostAbsent()
     {
         return $this->players()
-                    ->withCount(['gameParticipations as absent_games_count' => function($query) {
-                        $query->where('status', 'absent');
-                    }, 'sessionParticipations as absent_sessions_count' => function($query) {
-                        $query->where('status', 'absent');
-                    }])
-                    ->orderByDesc('absent_games_count')
-                    ->orderByDesc('absent_sessions_count')
-                    ->first();
+            ->withCount(['gameParticipations as absent_count' => function ($query) {
+                $query->where('status', 'absent');
+            }])
+            ->orderByDesc('absent_count')
+            ->first();
     }
 
     public function getUpcomingGameAttribute()
