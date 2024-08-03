@@ -13,7 +13,7 @@ class GameSeeder extends Seeder
      */
     public function run(): void
     {
-            Game::create(['team_id' => 1, 'date' => '2023-11-14 14:58:21', 'opponent' => 'Real Madrid', 'result' => '0-2','season' => '2023/2034']);
-            Game::create(['team_id' => 2, 'date' => '2023-11-14 14:58:21', 'opponent' => 'FC Barcelona', 'result' => '1-2','season' => '2023/2024']);
+            Game::create(['team_id' => 1, 'date' => '2023-11-14 14:58:21', 'opponent' => 'Real Madrid', 'result' => '0-2','season' => '2024/2025']);
+            Game::create(['team_id' => 2, 'date' => '2023-11-14 14:58:21', 'opponent' => 'FC Barcelona', 'result' => '1-2','season' => '2024/2025']);
     }
 }
