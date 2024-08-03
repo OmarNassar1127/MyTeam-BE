@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
+
+use App\Http\App\Controllers\GameController;
 use App\Http\App\Controllers\ProfileController;
 use App\Http\App\Controllers\AppLoginController;
 use App\Http\App\Controllers\AppRegistrationController;
@@ -25,5 +27,8 @@ Route::middleware('auth:users')->group(function () {
   Route::get('/profile/player-stats', [ProfileController::class, 'getPlayerStats']);
   Route::get('/profile/team-members', [ProfileController::class, 'getTeamMembers']);
   
-
+  //trainer game schedueling 
+  Route::get('/games', [GameController::class, 'index']);
+  Route::post('/games', [GameController::class, 'store']);
+  Route::put('/games/{gameId}/update-players', [GameController::class, 'updatePlayers']);
 });

@@ -15,6 +15,8 @@ class GameResources extends JsonResource
           'opponent' => $this->opponent,
           'home' => $this->home ? 'Thuis' : 'Uit',
           'result' => $this->result,
+          'location' => $this->location,
+          'notes' => $this->notes,
           'season' => $this->season
       ];
   }
