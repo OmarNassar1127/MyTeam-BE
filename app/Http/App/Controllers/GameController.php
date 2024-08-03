@@ -21,6 +21,10 @@ class GameController extends Controller
 
     public function store(StoreGameRequest $request)
     {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+
         $validated = $request->validated();
         
         $team = $this->user->teams()->latest()->first();
@@ -54,6 +58,10 @@ class GameController extends Controller
 
     public function updatePlayers($gameId, UpdateGamePlayersRequest $request)
     {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+        
         $playerStatuses = $request->validated('players');
         
         foreach ($playerStatuses as $player) {
