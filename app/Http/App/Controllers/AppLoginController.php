@@ -19,7 +19,7 @@ class AppLoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('teams')->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -29,6 +29,7 @@ class AppLoginController extends Controller
 
         return [
             'token' => $user->createToken('admin')->plainTextToken,
+            'team_name' => $user->teams()->first()->name,
             'user' => UserResources::make($user),
         ];
     }
