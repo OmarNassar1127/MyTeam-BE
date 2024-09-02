@@ -24,11 +24,25 @@ class GameController extends Controller
         if ($this->user->role !== 'manager'){
             abort(403, 'unauthorized');
         }
-
+    
         $validated = $request->validated();
         
         $team = $this->user->teams()->latest()->first();
-        
+    
+        // Get the current date
+        $currentDate = now(); // Or Carbon::now() if not using Carbon globally
+    
+        // Determine the current year
+        $currentYear = $currentDate->year;
+    
+        // Determine the start of the season year
+        if ($currentDate->month < 8) { // Before August
+            $season = ($currentYear - 1) . '/' . $currentYear;
+        } else { // August or later
+            $season = $currentYear . '/' . ($currentYear + 1);
+        }
+    
+        // Create the game with the dynamically determined season
         $game = Game::create([
             'team_id' => $team->id,
             'date' => $validated['date'],
@@ -36,12 +50,12 @@ class GameController extends Controller
             'home' => $validated['home'],
             'location' => $validated['location'] ?? null,
             'notes' => $validated['notes'] ?? null,
-            'result' => '0-0',
-            'season' => '2024/2025', //ToDo:: this needs to be solved.
+            'result' => null,
+            'season' => $season, // Dynamically set season
         ]);
-
+    
         $teamMembers = $team->users()->pluck('users.id');
-
+    
         $pivotData = $teamMembers->mapWithKeys(function ($userId) use ($team) {
             return [$userId => [
                 'team_id' => $team->id,
@@ -55,6 +69,7 @@ class GameController extends Controller
     
         $game->users()->attach($pivotData);
     }
+    
 
     public function updatePlayers($gameId, UpdateGamePlayersRequest $request)
     {
