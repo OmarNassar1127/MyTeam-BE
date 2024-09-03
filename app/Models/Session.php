@@ -10,6 +10,8 @@ class Session extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'session_users')

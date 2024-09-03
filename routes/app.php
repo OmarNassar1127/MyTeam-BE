@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\App\Controllers\GameController;
+use App\Http\App\Controllers\SessionController;
 use App\Http\App\Controllers\ProfileController;
 use App\Http\App\Controllers\AppLoginController;
 use App\Http\App\Controllers\AppRegistrationController;
@@ -31,4 +32,9 @@ Route::middleware('auth:users')->group(function () {
   Route::get('/games', [GameController::class, 'index']);
   Route::post('/games', [GameController::class, 'store']);
   Route::put('/games/{gameId}/update-players', [GameController::class, 'updatePlayers']);
+
+  //trainer sessions schedueling
+  Route::get('/sessions', [SessionController::class, 'index']);
+  Route::post('/sessions', [SessionController::class, 'store']);
+  Route::put('/sessions/{sessionId}/update-players', [SessionController::class, 'updatePlayers']);
 });
