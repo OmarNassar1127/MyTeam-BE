@@ -19,6 +19,13 @@ class GameController extends Controller
         return GameResources::collection($games);
     }
 
+    public function show($gameId)
+    {
+        $game = Game::with(['team', 'users'])->findOrFail($gameId);
+        
+        return new GameResources($game);
+    }
+
     public function store(StoreGameRequest $request)
     {
         if ($this->user->role !== 'manager'){
@@ -84,5 +91,7 @@ class GameController extends Controller
                 ->where('user_id', $player['user_id'])
                 ->update(['status' => $player['status']]);
         }        
+
+        return GameUser::where('game_id', $gameId)->with('user')->get();        
     }
 }
