@@ -32,7 +32,8 @@ Route::middleware('auth:users')->group(function () {
   Route::get('/games', [GameController::class, 'index']);
   Route::get('/games/{gameId}', [GameController::class, 'show']);
   Route::post('/games', [GameController::class, 'store']);
-  Route::put('/games/{gameId}/update-players', [GameController::class, 'updatePlayers']);
+  Route::put('/games/{gameId}/update-players-status', [GameController::class, 'updatePlayersStatus']);
+  Route::put('/games/{gameId}/update-players', [GameController::class, 'updatePlayersStatistics']);
 
   //trainer sessions schedueling
   Route::get('/sessions', [SessionController::class, 'index']);

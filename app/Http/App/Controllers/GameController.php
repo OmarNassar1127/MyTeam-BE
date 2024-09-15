@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\App\Resources\GameResources;
 use App\Http\App\Controllers\Requests\StoreGameRequest;
 use App\Http\App\Controllers\Requests\UpdateGamePlayersRequest;
+use App\Http\App\Controllers\Requests\UpdateGamePlayersStatisticsRequest;
 
 class GameController extends Controller
 {
@@ -76,9 +77,7 @@ class GameController extends Controller
     
         $game->users()->attach($pivotData);
     }
-    
-
-    public function updatePlayers($gameId, UpdateGamePlayersRequest $request)
+    public function updatePlayersStatus($gameId, UpdateGamePlayersRequest $request)
     {
         if ($this->user->role !== 'manager'){
             abort(403, 'unauthorized');
@@ -90,6 +89,28 @@ class GameController extends Controller
             GameUser::where('game_id', $gameId)
                 ->where('user_id', $player['user_id'])
                 ->update(['status' => $player['status']]);
+        }        
+
+        return GameUser::where('game_id', $gameId)->with('user')->get();        
+    }
+ 
+    public function updatePlayersStatistics($gameId, UpdateGamePlayersStatisticsRequest $request)
+    {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+        
+        $playerStatuses = $request->validated('players');
+        
+        foreach ($playerStatuses as $player) {
+            GameUser::where('game_id', $gameId)
+                ->where('user_id', $player['user_id'])
+                ->update([
+                    'goals' => $player['goals'],
+                    'assists' => $player['assists'],
+                    'yellow_cards' => $player['yellow_cards'],
+                    'red_cards' => $player['red_cards']
+                ]);
         }        
 
         return GameUser::where('game_id', $gameId)->with('user')->get();        

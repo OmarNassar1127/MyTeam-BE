@@ -17,7 +17,7 @@ class UpdateGamePlayersRequest extends FormRequest
             'players' => 'required|array',
             'players.*' => 'required|array:user_id,status',
             'players.*.user_id' => 'required|exists:users,id',
-            'players.*.status' => 'required|in:present,absent,late',
+            'players.*.status' => 'required|in:present,absent,late,cancelled',
         ];
     }
 }
