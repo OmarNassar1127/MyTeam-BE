@@ -27,6 +27,20 @@ class GameController extends Controller
         return new GameResources($game);
     }
 
+    public function updateNotes($gameId, Request $request) 
+    {
+        $request->validate([
+            'notes' => 'required|string',
+        ]);
+
+        $game = Game::findOrFail($gameId);
+        
+        $game->timestamps = false; 
+        $game->update([
+            'notes' => $request->notes
+        ]);
+    }
+
     public function store(StoreGameRequest $request)
     {
         if ($this->user->role !== 'manager'){
