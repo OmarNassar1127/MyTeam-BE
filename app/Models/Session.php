@@ -15,7 +15,7 @@ class Session extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'session_users')
-                    ->withPivot('is_manager')
+                    ->withPivot( 'status')
                     ->withTimestamps();
     }
     

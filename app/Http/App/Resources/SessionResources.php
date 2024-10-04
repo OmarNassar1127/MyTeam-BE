@@ -14,6 +14,9 @@ class SessionResources extends JsonResource
           'date' => $this->date,
           'notes' => $this->notes,
           'completed' => $this->completed ? 'Ja' : 'Nee',
+          'players' => $this->whenLoaded('users', function () {
+                return SessionPlayerResource::collection($this->users);
+            }),
       ];
   }
 }

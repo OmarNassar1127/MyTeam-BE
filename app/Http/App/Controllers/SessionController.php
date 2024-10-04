@@ -8,6 +8,7 @@ use App\Models\Session;
 use App\Models\SessionUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\App\Resources\SessionResources;
 use App\Http\App\Controllers\Requests\StoreSessionRequest;
 use App\Http\App\Controllers\Requests\UpdateSessionUserRequest;
 
@@ -19,6 +20,13 @@ class SessionController extends Controller
         $sessions = Session::where('team_id', $team->id)->orderBy('date', 'desc')->get();
         
         return $sessions;
+    }
+
+    public function show($sessionId)
+    {
+        $session = Session::with(['team', 'users'])->findOrFail($sessionId);
+        
+        return new SessionResources($session);
     }
 
     public function store(StoreSessionRequest $request)
@@ -62,7 +70,7 @@ class SessionController extends Controller
         }
     }
 
-    public function updatePlayers($gameId, UpdateSessionUserRequest $request)
+    public function updatePlayers($sessionId, UpdateSessionUserRequest $request)
     {
         if ($this->user->role !== 'manager'){
             abort(403, 'unauthorized');
@@ -71,9 +79,12 @@ class SessionController extends Controller
         $playerStatuses = $request->validated('players');
         
         foreach ($playerStatuses as $player) {
-            SessionUser::where('session_id', $gameId)
+            SessionUser::where('session_id', $sessionId)
                 ->where('user_id', $player['user_id'])
                 ->update(['status' => $player['status']]);
-        }        
+        }    
+
+        return SessionUser::where('session_id', $sessionId)->with('user')->get();        
+
     }
 }
