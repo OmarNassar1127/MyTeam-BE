@@ -39,6 +39,7 @@ Route::middleware('auth:users')->group(function () {
   //trainer sessions schedueling
   Route::get('/sessions', [SessionController::class, 'index']);
   Route::get('/sessions/{sessionsId}', [SessionController::class, 'show']);
+  Route::put('/sessions/{sessionsId}/update-notes', [SessionController::class, 'updateNotes']);
   Route::post('/sessions', [SessionController::class, 'store']);
   Route::put('/sessions/{sessionId}/update-players', [SessionController::class, 'updatePlayers']);
 });

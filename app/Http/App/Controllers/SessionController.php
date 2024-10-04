@@ -29,6 +29,20 @@ class SessionController extends Controller
         return new SessionResources($session);
     }
 
+    public function updateNotes($sessionId, Request $request) 
+    {
+        $request->validate([
+            'notes' => 'required|string',
+        ]);
+
+        $session = Session::findOrFail($sessionId);
+        
+        $session->timestamps = false; 
+        $session->update([
+            'notes' => $request->notes
+        ]);
+    }
+
     public function store(StoreSessionRequest $request)
     {
         $validated = $request->validated();
