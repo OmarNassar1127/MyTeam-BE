@@ -29,6 +29,10 @@ class GameController extends Controller
 
     public function updateNotes($gameId, Request $request) 
     {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+        
         $request->validate([
             'notes' => 'required|string',
         ]);

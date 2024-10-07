@@ -31,6 +31,10 @@ class SessionController extends Controller
 
     public function updateNotes($sessionId, Request $request) 
     {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+        
         $request->validate([
             'notes' => 'required|string',
         ]);
