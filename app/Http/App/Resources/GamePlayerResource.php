@@ -11,6 +11,7 @@ class GamePlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'player_number' => $this->player_number,
             'is_manager' => $this->pivot->is_manager,
             'status' => $this->pivot->status,
             'goals' => $this->pivot->goals,

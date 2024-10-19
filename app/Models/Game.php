@@ -37,4 +37,21 @@ class Game extends Model
                     ->wherePivot('is_manager', true)
                     ->withTimestamps();
     }
+
+    public function getFormattedScoreAttribute()
+    {
+        $teamScore = $this->gameUsers()->sum('goals');
+        $opponentScore = $this->opponent_score ?? 0;
+
+        if ($this->home) {
+            return "{$teamScore}-{$opponentScore}";
+        } else {
+            return "{$opponentScore}-{$teamScore}";
+        }
+    }
+
+    public function gameUsers()
+    {
+        return $this->hasMany(GameUser::class, 'game_id');
+    }
 }
