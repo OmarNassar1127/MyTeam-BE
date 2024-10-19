@@ -15,7 +15,7 @@ Route::post('/fetch-club', [AppRegistrationController::class, 'clubFetch']);
 Route::post('/registration', [AppRegistrationController::class, 'register']);
 Route::post('/registration-finish', [AppRegistrationController::class, 'registerFinish']);
 Route::get('/club/{clubId}/teams', [AppRegistrationController::class, 'getTeams']);
-Route::get('/club/{club}/teams/{team}/link', [AppRegistrationController::class, 'linkUser']);
+Route::put('/club/{club}/teams/{team}/link', [AppRegistrationController::class, 'linkUser']);
 
 Route::middleware('auth:users')->group(function () {
 

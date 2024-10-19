@@ -28,7 +28,7 @@ class AppLoginController extends Controller
         }
 
         return [
-            'token' => $user->createToken('admin')->plainTextToken,
+            'token' => $user->createToken('user')->plainTextToken,
             'team_name' => $user->teams()->first()->name,
             'user' => UserResources::make($user),
         ];

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\App\Resources\TeamResources;
+use App\Http\App\Controllers\Resources\UserResources;
 
 
 class AppRegistrationController extends Controller
@@ -67,21 +68,26 @@ class AppRegistrationController extends Controller
     return TeamResources::collection($club->teams);
   }
     
-  // public function linkUser($clubId, $teamId)
-  //   {
-  //       $user = Auth::user();
+  public function linkUser(Request $request, $clubId, $teamId)
+  {
+      $user =  User::where('email', $request->email)->first();
 
-  //       if (!$user) {
-  //           return response()->json(['message' => 'Unauthorized'], 401);
-  //       }
+      if (!$user) {
+          return response()->json(['message' => 'Unauthorized'], 401);
+      }
 
-  //       $team = Team::where('id', $teamId)->where('club_id', $clubId)->first();
-  //       if (!$team) {
-  //           return response()->json(['message' => 'Invalid team or club'], 400);
-  //       }
+      $team = Team::where('id', $teamId)->where('club_id', $clubId)->first();
+      if (!$team) {
+          return response()->json(['message' => 'Invalid team or club'], 400);
+      }
 
-  //       $user->teams()->attach($teamId, ['is_manager' => false]);
+      $user->teams()->attach($teamId, ['is_manager' => false]);
+      $user->roles()->attach(3);
 
-  //       return response()->json(['message' => 'User linked to team successfully']);
-  //   }
+      return [
+          'token' => $user->createToken('user')->plainTextToken,
+          'team_name' => $team->name,
+          'user' => new UserResources($user),
+      ];
+  }
 }
