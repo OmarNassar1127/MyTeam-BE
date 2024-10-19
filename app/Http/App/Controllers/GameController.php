@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\App\Resources\GameResources;
 use App\Http\App\Controllers\Requests\StoreGameRequest;
 use App\Http\App\Controllers\Requests\UpdateGamePlayersRequest;
+use App\Http\App\Controllers\Requests\UpdateOpponentScoreRequest;
 use App\Http\App\Controllers\Requests\UpdateGamePlayersStatisticsRequest;
 
 class GameController extends Controller
@@ -25,6 +26,19 @@ class GameController extends Controller
         $game = Game::with(['team', 'users'])->findOrFail($gameId);
         
         return new GameResources($game);
+    }
+
+    public function opponent(UpdateOpponentScoreRequest $request ,$gameId)
+    {
+        if ($this->user->role !== 'manager'){
+            abort(403, 'unauthorized');
+        }
+        
+        $game = Game::with(['team', 'users'])->findOrFail($gameId);
+
+        $game->update([
+            'opponent_score' => $request->validated()['opponent_score']
+        ]);
     }
 
     public function updateNotes($gameId, Request $request) 
