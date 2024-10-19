@@ -31,7 +31,7 @@ Route::middleware('auth:users')->group(function () {
   //trainer game schedueling 
   Route::get('/games', [GameController::class, 'index']);
   Route::get('/games/{gameId}', [GameController::class, 'show']);
-  Route::post('/games/{gameId}/opponent', [GameController::class, 'opponent']);
+  Route::put('/games/{gameId}/opponent', [GameController::class, 'opponent']);
   Route::put('/games/{gameId}/update-notes', [GameController::class, 'updateNotes']);
   Route::post('/games', [GameController::class, 'store']);
   Route::put('/games/{gameId}/update-players-status', [GameController::class, 'updatePlayersStatus']);
