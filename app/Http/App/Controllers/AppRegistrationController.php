@@ -7,7 +7,6 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\App\Resources\TeamResources;
 use App\Http\App\Controllers\Resources\UserResources;
@@ -36,30 +35,26 @@ class AppRegistrationController extends Controller
       'first_name' => 'required|string',
       'last_name' => 'required|string',
       'email' => 'required|email|unique:users,email',
+      'phone_number' => 'required|string',
+      'password' => 'required|string|confirmed', 
     ]);
-  
-    User::create([
+
+    $user = User::create([
       'first_name' => $request->first_name,
       'last_name' => $request->last_name,
       'email' => $request->email,
-    ]);
-  }
-  
-  public function registerFinish(Request $request) {
-    $request->validate([
-      'email' => 'required|email|exists:users,email',
-      'phone_number' => 'required',
-      'password' => 'required',
-      'password_confirmation' => 'required|same:password',
-    ]);
-  
-    $user = User::where('email', $request->email)->first();
-  
-    $user->update([
       'phone_number' => $request->phone_number,
       'password' => Hash::make($request->password),
     ]);
-    return [200];
+    
+    $user->roles()->attach(3);
+
+    $token = $user->createToken('user')->plainTextToken;
+    error_log(json_encode(new UserResources($user)));
+    return [
+      'token' => $token,
+      'user' => new UserResources($user),
+    ];
   }
 
   public function getTeams($clubId)
@@ -70,24 +65,23 @@ class AppRegistrationController extends Controller
     
   public function linkUser(Request $request, $clubId, $teamId)
   {
-      $user =  User::where('email', $request->email)->first();
+    $user = $this->user;;
 
-      if (!$user) {
-          return response()->json(['message' => 'Unauthorized'], 401);
-      }
+    if (!$user) {
+      return response()->json(['message' => 'Unauthorized'], 401);
+    }
 
-      $team = Team::where('id', $teamId)->where('club_id', $clubId)->first();
-      if (!$team) {
-          return response()->json(['message' => 'Invalid team or club'], 400);
-      }
+    $team = Team::where('id', $teamId)->where('club_id', $clubId)->first();
+    if (!$team) {
+      return response()->json(['message' => 'Invalid team or club'], 400);
+    }
 
-      $user->teams()->attach($teamId, ['is_manager' => false]);
-      $user->roles()->attach(3);
+    $user->teams()->attach($teamId, ['is_manager' => false]);
 
-      return [
-          'token' => $user->createToken('user')->plainTextToken,
-          'team_name' => $team->name,
-          'user' => new UserResources($user),
-      ];
+    return [
+      'token' => $user->createToken('user')->plainTextToken,
+      'team_name' => $team->name,
+      'user' => new UserResources($user),
+    ];
   }
 }

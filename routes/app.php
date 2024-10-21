@@ -11,16 +11,18 @@ use App\Http\App\Controllers\AppRegistrationController;
 Route::post('/log-in', [AppLoginController::class, 'logIn']);
 
 //Register to the app
-Route::post('/fetch-club', [AppRegistrationController::class, 'clubFetch']);
 Route::post('/registration', [AppRegistrationController::class, 'register']);
-Route::post('/registration-finish', [AppRegistrationController::class, 'registerFinish']);
-Route::get('/club/{clubId}/teams', [AppRegistrationController::class, 'getTeams']);
-Route::put('/club/{club}/teams/{team}/link', [AppRegistrationController::class, 'linkUser']);
 
 Route::middleware('auth:users')->group(function () {
-
+  
+  //registration
+  Route::post('/fetch-club', [AppRegistrationController::class, 'clubFetch']);
+  Route::get('/club/{clubId}/teams', [AppRegistrationController::class, 'getTeams']);
+  Route::put('/club/{club}/teams/{team}/link', [AppRegistrationController::class, 'linkUser']);
+  //log-out
   Route::post('/log-out', [AppLoginController::class, 'logOut']);
-  //profile
+  
+  //profilee
   Route::get('/profile', [ProfileController::class, 'profile']);
   Route::get('/user/profile-image', [ProfileController::class, 'getProfileImage'])->name('user.profile-image');
   Route::post('/profile/image', [ProfileController::class, 'image']);
