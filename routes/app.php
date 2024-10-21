@@ -8,10 +8,10 @@ use App\Http\App\Controllers\AppLoginController;
 use App\Http\App\Controllers\AppRegistrationController;
 
 //Login to the app
-Route::post('/log-in', [AppLoginController::class, 'logIn']);
+Route::post('/log-in', [AppLoginController::class, 'logIn'])->middleware('throttle:20,1');
 
 //Register to the app
-Route::post('/registration', [AppRegistrationController::class, 'register']);
+Route::post('/registration', [AppRegistrationController::class, 'register'])->middleware('throttle:20,1');
 
 Route::middleware('auth:users')->group(function () {
   
